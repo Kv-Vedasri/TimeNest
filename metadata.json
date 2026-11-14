@@ -1,0 +1,6 @@
+{
+  "name": "TimeNest",
+  "description": "Your Time, Your Space — Smart clock studio, customizable productivity dashboard, quick timers, stopwatch, and offline time utilities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

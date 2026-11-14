@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">TimeNest</string>
+    <string name="app_tagline">Your Time, Your Space.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_clock">Clock</string>
+    <string name="nav_tools">Tools</string>
+    <string name="nav_games">Games</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_next">Continue</string>
+    <string name="onboarding_start">Enter TimeNest</string>
+    <string name="onboarding_title_1">Welcome to TimeNest</string>
+    <string name="onboarding_desc_1">Your calm, precision-crafted space for timekeeping, deep focus, and daily rhythm—fully offline and clutter-free.</string>
+    <string name="onboarding_title_2">Tailor Your Space</string>
+    <string name="onboarding_desc_2">Choose your preferred clock format and visual atmosphere. Switch themes or AMOLED dark mode anytime.</string>
+    <string name="onboarding_title_3">Built for Every Moment</string>
+    <string name="onboarding_desc_3">Explore live clock faces, nightstand mode, quick timers, stopwatch, world time zones, and reaction challenges.</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_customize">Customize</string>
+    <string name="dashboard_customize_title">Customize Dashboard</string>
+    <string name="dashboard_customize_subtitle">Reorder or toggle cards on your Home space.</string>
+    <string name="dashboard_reset_layout">Reset Default</string>
+    <string name="dashboard_done">Done</string>
+    <string name="day_indicator">Daytime</string>
+    <string name="night_indicator">Nighttime</string>
+    <string name="upcoming_schedule_title">Sleep &amp; Wake Target</string>
+    <string name="quick_timer_title">Quick Timer</string>
+    <string name="stopwatch_shortcut_title">Stopwatch</string>
+    <string name="focus_shortcut_title">Focus Session</string>
+    <string name="world_clock_preview_title">World Clock</string>
+    <string name="productivity_summary_title">Today\'s Rhythm</string>
+
+    <!-- Clock Studio -->
+    <string name="clock_studio_title">Clock Studio</string>
+    <string name="clock_nightstand_enter">Nightstand</string>
+    <string name="clock_nightstand_exit">Tap anywhere to show controls</string>
+    <string name="clock_customize_face">Customize Face</string>
+    <string name="clock_speak_time">Speak Time</string>
+
+    <!-- Tools -->
+    <string name="tools_title">Time Tools</string>
+    <string name="tools_tab_timer">Timer</string>
+    <string name="tools_tab_stopwatch">Stopwatch</string>
+    <string name="tools_tab_focus">Focus</string>
+
+    <!-- Games -->
+    <string name="games_title">Time Games</string>
+    <string name="reaction_game_title">Reaction Speed Test</string>
+    <string name="reaction_game_subtitle">Test your reflex precision offline. Personal best is saved locally.</string>
+
+    <!-- Profile & Settings -->
+    <string name="profile_title">Profile &amp; Space</string>
+    <string name="settings_appearance">Appearance &amp; Theme</string>
+    <string name="settings_clock">Clock Preferences</string>
+    <string name="settings_privacy">Privacy &amp; Offline Security</string>
+    <string name="privacy_dialog_title">Local-First Privacy Policy</string>
+    <string name="privacy_dialog_body">TimeNest operates offline for all core features in Phase 1. Your clock preferences, dashboard arrangement, world cities, focus logs, and personal best scores are stored strictly on your device using Android DataStore and Room SQLite. No personal data or analytics are transmitted off your device.</string>
+    <string name="close">Close</string>
+</resources>
