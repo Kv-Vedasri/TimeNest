@@ -66,22 +66,28 @@ class TimeNestRepository(
       worldCityDao.insertAll(
         listOf(
           WorldCityEntity(
+            zoneId = TimeFormatter.ZONE_IST,
+            cityName = "India (IST)",
+            regionLabel = "Asia/Kolkata",
+            sortOrder = 0,
+          ),
+          WorldCityEntity(
             zoneId = "Europe/London",
             cityName = "London",
             regionLabel = "Europe",
-            sortOrder = 0,
+            sortOrder = 1,
           ),
           WorldCityEntity(
             zoneId = "America/New_York",
             cityName = "New York",
             regionLabel = "America",
-            sortOrder = 1,
+            sortOrder = 2,
           ),
           WorldCityEntity(
             zoneId = "Asia/Tokyo",
             cityName = "Tokyo",
             regionLabel = "Asia",
-            sortOrder = 2,
+            sortOrder = 3,
           ),
         )
       )
@@ -136,6 +142,9 @@ class TimeNestRepository(
   suspend fun setUse24HourFormat(use24h: Boolean) = prefsDataSource.setUse24HourFormat(use24h)
 
   suspend fun setShowSeconds(show: Boolean) = prefsDataSource.setShowSeconds(show)
+
+  suspend fun setDisplayTimeZoneId(zoneId: String) =
+    prefsDataSource.setDisplayTimeZoneId(zoneId)
 
   suspend fun setClockStyle(style: ClockStyle) = prefsDataSource.setClockStyle(style)
 

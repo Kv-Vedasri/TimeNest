@@ -6,6 +6,7 @@ data class UserPreferences(
   val accentPreset: AccentPreset = AccentPreset.SOLAR_AMBER,
   val use24HourFormat: Boolean = false,
   val showSeconds: Boolean = true,
+  val displayTimeZoneId: String = "Asia/Kolkata",
   val clockStyle: ClockStyle = ClockStyle.DIGITAL,
   val clockFont: ClockFont = ClockFont.OUTFIT,
   val clockBackdrop: ClockBackdrop = ClockBackdrop.AMBIENT,

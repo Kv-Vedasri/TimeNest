@@ -32,13 +32,27 @@ class ExampleRobolectricTest {
   }
 
   @Test
-  fun `time formatter respects 12h and 24h formats and IANA zones`() {
+  fun `time formatter respects 12h and 24h formats and IST and IANA zones`() {
+    // 2025-10-09 08:53:20 UTC -> 14:23:20 IST (UTC+05:30)
     val fixedMillis = 1_760_000_000_000L
-    val snap24 = TimeFormatter.buildLocalSnapshot(fixedMillis, use24Hour = true)
-    val snap12 = TimeFormatter.buildLocalSnapshot(fixedMillis, use24Hour = false)
-    assertEquals(2, snap24.hourDisplay.length)
-    assertEquals(2, snap12.minuteDisplay.length)
-    assertTrue(snap12.amPm == "AM" || snap12.amPm == "PM")
+    val snapIst24 =
+      TimeFormatter.buildLocalSnapshot(
+        epochMillis = fixedMillis,
+        use24Hour = true,
+        timeZoneId = TimeFormatter.ZONE_IST,
+      )
+    assertEquals("14", snapIst24.hourDisplay)
+    assertEquals("23", snapIst24.minuteDisplay)
+    assertEquals("IST (UTC+5:30)", snapIst24.timeZoneName)
+
+    val snap12 =
+      TimeFormatter.buildLocalSnapshot(
+        epochMillis = fixedMillis,
+        use24Hour = false,
+        timeZoneId = TimeFormatter.ZONE_IST,
+      )
+    assertEquals("02", snap12.hourDisplay)
+    assertEquals("PM", snap12.amPm)
 
     val tokyo =
       TimeFormatter.formatWorldZone(

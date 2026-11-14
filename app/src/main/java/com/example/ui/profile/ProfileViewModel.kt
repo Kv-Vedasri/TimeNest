@@ -54,6 +54,10 @@ class ProfileViewModel(private val repository: TimeNestRepository) : ViewModel()
     viewModelScope.launch { repository.setShowSeconds(show) }
   }
 
+  fun setDisplayTimeZoneId(zoneId: String) {
+    viewModelScope.launch { repository.setDisplayTimeZoneId(zoneId) }
+  }
+
   fun setClockFont(font: ClockFont) {
     viewModelScope.launch { repository.setClockFont(font) }
   }

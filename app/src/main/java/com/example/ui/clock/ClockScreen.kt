@@ -88,6 +88,7 @@ fun ClockScreen(
   onSelectBackdrop: (ClockBackdrop) -> Unit,
   onToggle24Hour: (Boolean) -> Unit,
   onToggleSeconds: (Boolean) -> Unit,
+  onSelectTimeZone: (String) -> Unit,
   onToggleKeepScreenOn: (Boolean) -> Unit,
   onEnterNightstand: () -> Unit,
   onExitNightstand: () -> Unit,
@@ -351,6 +352,24 @@ fun ClockScreen(
           text = stringResource(R.string.clock_customize_face),
           style = MaterialTheme.typography.headlineMedium,
         )
+
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+          Text(text = "Primary Clock Timezone", style = MaterialTheme.typography.titleMedium)
+          FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+              selected = prefs.displayTimeZoneId == com.example.data.repository.TimeFormatter.ZONE_IST,
+              onClick = { onSelectTimeZone(com.example.data.repository.TimeFormatter.ZONE_IST) },
+              label = { Text("IST (India · UTC+5:30)") },
+              modifier = Modifier.testTag("clock_tz_ist"),
+            )
+            FilterChip(
+              selected = prefs.displayTimeZoneId == com.example.data.repository.TimeFormatter.ZONE_SYSTEM,
+              onClick = { onSelectTimeZone(com.example.data.repository.TimeFormatter.ZONE_SYSTEM) },
+              label = { Text("Device Local") },
+              modifier = Modifier.testTag("clock_tz_system"),
+            )
+          }
+        }
 
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
           Text(text = "Clock Typography", style = MaterialTheme.typography.titleMedium)

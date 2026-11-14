@@ -36,7 +36,12 @@ class ClockViewModel(private val repository: TimeNestRepository) : ViewModel() {
         nightstand,
         dimmed ->
         ClockUiState(
-          timeSnapshot = TimeFormatter.buildLocalSnapshot(epoch, prefs.use24HourFormat),
+          timeSnapshot =
+            TimeFormatter.buildLocalSnapshot(
+              epochMillis = epoch,
+              use24Hour = prefs.use24HourFormat,
+              timeZoneId = prefs.displayTimeZoneId,
+            ),
           preferences = prefs,
           isNightstandMode = nightstand,
           nightstandDimmed = dimmed,
@@ -66,6 +71,10 @@ class ClockViewModel(private val repository: TimeNestRepository) : ViewModel() {
 
   fun setShowSeconds(show: Boolean) {
     viewModelScope.launch { repository.setShowSeconds(show) }
+  }
+
+  fun setDisplayTimeZoneId(zoneId: String) {
+    viewModelScope.launch { repository.setDisplayTimeZoneId(zoneId) }
   }
 
   fun setKeepScreenOnNightstand(keepOn: Boolean) {

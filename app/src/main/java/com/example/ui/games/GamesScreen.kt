@@ -81,7 +81,7 @@ fun GamesScreen(
               style = MaterialTheme.typography.headlineLarge,
             )
             Text(
-              text = stringResource(R.string.reaction_game_subtitle),
+              text = "${stringResource(R.string.reaction_game_title)} · ${stringResource(R.string.reaction_game_subtitle)}",
               style = MaterialTheme.typography.bodyMedium,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

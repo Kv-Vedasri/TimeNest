@@ -28,6 +28,7 @@ class UserPreferencesDataSource(private val context: Context) {
     val ACCENT_PRESET = stringPreferencesKey("accent_preset")
     val USE_24H = booleanPreferencesKey("use_24h")
     val SHOW_SECONDS = booleanPreferencesKey("show_seconds")
+    val DISPLAY_TIME_ZONE_ID = stringPreferencesKey("display_time_zone_id")
     val CLOCK_STYLE = stringPreferencesKey("clock_style")
     val CLOCK_FONT = stringPreferencesKey("clock_font")
     val CLOCK_BACKDROP = stringPreferencesKey("clock_backdrop")
@@ -49,6 +50,7 @@ class UserPreferencesDataSource(private val context: Context) {
         accentPreset = parseEnum(prefs[Keys.ACCENT_PRESET], AccentPreset.SOLAR_AMBER),
         use24HourFormat = prefs[Keys.USE_24H] ?: false,
         showSeconds = prefs[Keys.SHOW_SECONDS] ?: true,
+        displayTimeZoneId = prefs[Keys.DISPLAY_TIME_ZONE_ID] ?: "Asia/Kolkata",
         clockStyle = parseEnum(prefs[Keys.CLOCK_STYLE], ClockStyle.DIGITAL),
         clockFont = parseEnum(prefs[Keys.CLOCK_FONT], ClockFont.OUTFIT),
         clockBackdrop = parseEnum(prefs[Keys.CLOCK_BACKDROP], ClockBackdrop.AMBIENT),
@@ -81,6 +83,10 @@ class UserPreferencesDataSource(private val context: Context) {
 
   suspend fun setShowSeconds(show: Boolean) {
     context.dataStore.edit { it[Keys.SHOW_SECONDS] = show }
+  }
+
+  suspend fun setDisplayTimeZoneId(zoneId: String) {
+    context.dataStore.edit { it[Keys.DISPLAY_TIME_ZONE_ID] = zoneId }
   }
 
   suspend fun setClockStyle(style: ClockStyle) {

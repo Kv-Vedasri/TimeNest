@@ -65,6 +65,7 @@ fun ProfileScreen(
   onSelectAccent: (AccentPreset) -> Unit,
   onToggle24Hour: (Boolean) -> Unit,
   onToggleShowSeconds: (Boolean) -> Unit,
+  onSelectTimeZone: (String) -> Unit,
   onSelectClockFont: (ClockFont) -> Unit,
   onToggleKeepScreenOn: (Boolean) -> Unit,
   onSelectDailyFocusGoal: (Int) -> Unit,
@@ -216,6 +217,21 @@ fun ProfileScreen(
               onCheckedChange = onToggleKeepScreenOn,
               tag = "profile_keep_screen_switch",
             )
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+
+            Text(text = "Primary Clock Timezone", style = MaterialTheme.typography.titleMedium)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+              FilterChip(
+                selected = prefs.displayTimeZoneId == com.example.data.repository.TimeFormatter.ZONE_IST,
+                onClick = { onSelectTimeZone(com.example.data.repository.TimeFormatter.ZONE_IST) },
+                label = { Text("IST (India · UTC+5:30)") },
+              )
+              FilterChip(
+                selected = prefs.displayTimeZoneId == com.example.data.repository.TimeFormatter.ZONE_SYSTEM,
+                onClick = { onSelectTimeZone(com.example.data.repository.TimeFormatter.ZONE_SYSTEM) },
+                label = { Text("Device Local") },
+              )
+            }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
             Text(text = "Clock Font", style = MaterialTheme.typography.titleMedium)

@@ -20,8 +20,24 @@ data class WorldZoneInfo(
 
 object TimeFormatter {
 
-  fun buildLocalSnapshot(epochMillis: Long, use24Hour: Boolean): TimeSnapshot {
-    val calendar = Calendar.getInstance().apply { timeInMillis = epochMillis }
+  const val ZONE_SYSTEM = "SYSTEM"
+  const val ZONE_IST = "Asia/Kolkata"
+
+  fun resolveTimeZone(timeZoneId: String): TimeZone {
+    return if (timeZoneId == ZONE_SYSTEM || timeZoneId.isBlank()) {
+      TimeZone.getDefault()
+    } else {
+      TimeZone.getTimeZone(timeZoneId)
+    }
+  }
+
+  fun buildLocalSnapshot(
+    epochMillis: Long,
+    use24Hour: Boolean,
+    timeZoneId: String = ZONE_IST,
+  ): TimeSnapshot {
+    val tz = resolveTimeZone(timeZoneId)
+    val calendar = Calendar.getInstance(tz).apply { timeInMillis = epochMillis }
     val hour24 = calendar.get(Calendar.HOUR_OF_DAY)
     val minute = calendar.get(Calendar.MINUTE)
     val second = calendar.get(Calendar.SECOND)
@@ -34,10 +50,16 @@ object TimeFormatter {
       }
     val amPm = if (hour24 < 12) "AM" else "PM"
     val locale = Locale.getDefault()
-    val dayOfWeek = SimpleDateFormat("EEEE", locale).format(Date(epochMillis))
-    val dateFormatted = SimpleDateFormat("MMM d, yyyy", locale).format(Date(epochMillis))
-    val tz = calendar.timeZone
-    val tzShort = tz.getDisplayName(tz.inDaylightTime(Date(epochMillis)), TimeZone.SHORT, locale)
+    val dayOfWeek =
+      SimpleDateFormat("EEEE", locale).apply { timeZone = tz }.format(Date(epochMillis))
+    val dateFormatted =
+      SimpleDateFormat("MMM d, yyyy", locale).apply { timeZone = tz }.format(Date(epochMillis))
+    val tzShort =
+      if (tz.id == ZONE_IST) {
+        "IST (UTC+5:30)"
+      } else {
+        tz.getDisplayName(tz.inDaylightTime(Date(epochMillis)), TimeZone.SHORT, locale)
+      }
     val isDaytime = hour24 in 6..18
     val dayPhaseLabel =
       when (hour24) {
@@ -73,17 +95,18 @@ object TimeFormatter {
     regionLabel: String,
     epochMillis: Long,
     use24Hour: Boolean,
+    baseTimeZoneId: String = ZONE_IST,
   ): WorldZoneInfo {
     val targetTz = TimeZone.getTimeZone(zoneId)
-    val localTz = TimeZone.getDefault()
+    val baseTz = resolveTimeZone(baseTimeZoneId)
     val targetCal = Calendar.getInstance(targetTz).apply { timeInMillis = epochMillis }
-    val localCal = Calendar.getInstance(localTz).apply { timeInMillis = epochMillis }
+    val baseCal = Calendar.getInstance(baseTz).apply { timeInMillis = epochMillis }
 
     val pattern = if (use24Hour) "HH:mm" else "h:mm a"
     val sdf = SimpleDateFormat(pattern, Locale.getDefault()).apply { timeZone = targetTz }
     val formattedTime = sdf.format(Date(epochMillis))
 
-    val diffMillis = targetTz.getOffset(epochMillis) - localTz.getOffset(epochMillis)
+    val diffMillis = targetTz.getOffset(epochMillis) - baseTz.getOffset(epochMillis)
     val diffHours = diffMillis / 3_600_000.0
     val offsetLabel =
       when {
@@ -100,13 +123,13 @@ object TimeFormatter {
       }
 
     val targetDay = targetCal.get(Calendar.DAY_OF_YEAR)
-    val localDay = localCal.get(Calendar.DAY_OF_YEAR)
+    val baseDay = baseCal.get(Calendar.DAY_OF_YEAR)
     val targetYear = targetCal.get(Calendar.YEAR)
-    val localYear = localCal.get(Calendar.YEAR)
+    val baseYear = baseCal.get(Calendar.YEAR)
     val dayRelation =
       when {
-        targetYear > localYear || (targetYear == localYear && targetDay > localDay) -> "Tomorrow"
-        targetYear < localYear || (targetYear == localYear && targetDay < localDay) -> "Yesterday"
+        targetYear > baseYear || (targetYear == baseYear && targetDay > baseDay) -> "Tomorrow"
+        targetYear < baseYear || (targetYear == baseYear && targetDay < baseDay) -> "Yesterday"
         else -> "Today"
       }
 
@@ -136,8 +159,11 @@ object TimeFormatter {
     return String.format(Locale.US, "%d:%02d %s", h12, minute, amPm)
   }
 
-  fun startOfTodayMillis(nowMillis: Long = System.currentTimeMillis()): Long {
-    return Calendar.getInstance()
+  fun startOfTodayMillis(
+    nowMillis: Long = System.currentTimeMillis(),
+    timeZoneId: String = ZONE_IST,
+  ): Long {
+    return Calendar.getInstance(resolveTimeZone(timeZoneId))
       .apply {
         timeInMillis = nowMillis
         set(Calendar.HOUR_OF_DAY, 0)
@@ -174,17 +200,25 @@ object TimeFormatter {
   }
 
   fun availableCityZones(): List<Triple<String, String, String>> {
-    return TimeZone.getAvailableIDs()
-      .asSequence()
-      .filter { it.contains("/") && !it.startsWith("Etc/") && !it.startsWith("SystemV/") }
-      .map { id ->
-        val parts = id.split("/")
-        val region = parts.first().replace("_", " ")
-        val city = parts.last().replace("_", " ")
-        Triple(id, city, region)
-      }
-      .distinctBy { it.first }
-      .sortedBy { it.second }
-      .toList()
+    val istFeatured = Triple(ZONE_IST, "India (IST · Kolkata)", "Asia · UTC+5:30")
+    val others =
+      TimeZone.getAvailableIDs()
+        .asSequence()
+        .filter {
+          it.contains("/") &&
+            !it.startsWith("Etc/") &&
+            !it.startsWith("SystemV/") &&
+            it != ZONE_IST
+        }
+        .map { id ->
+          val parts = id.split("/")
+          val region = parts.first().replace("_", " ")
+          val city = parts.last().replace("_", " ")
+          Triple(id, city, region)
+        }
+        .distinctBy { it.first }
+        .sortedBy { it.second }
+        .toList()
+    return listOf(istFeatured) + others
   }
 }

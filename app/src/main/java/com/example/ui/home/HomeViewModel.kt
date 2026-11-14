@@ -60,7 +60,12 @@ class HomeViewModel(private val repository: TimeNestRepository) : ViewModel() {
         repository.observeTodaySummary(),
         quickTimerFlow,
       ) { epoch, prefs, cities, summary, timerState ->
-        val snapshot = TimeFormatter.buildLocalSnapshot(epoch, prefs.use24HourFormat)
+        val snapshot =
+          TimeFormatter.buildLocalSnapshot(
+            epochMillis = epoch,
+            use24Hour = prefs.use24HourFormat,
+            timeZoneId = prefs.displayTimeZoneId,
+          )
         val formattedCities =
           cities.map { entity ->
             entity to
@@ -70,6 +75,7 @@ class HomeViewModel(private val repository: TimeNestRepository) : ViewModel() {
                 regionLabel = entity.regionLabel,
                 epochMillis = epoch,
                 use24Hour = prefs.use24HourFormat,
+                baseTimeZoneId = prefs.displayTimeZoneId,
               )
           }
         HomeUiState(

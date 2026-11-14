@@ -267,7 +267,15 @@ fun HomeScreen(
           }
         }
 
-        Spacer(modifier = Modifier.height(18.dp))
+        FilledTonalButton(
+          onClick = { showCustomizeSheet = false },
+          shape = RoundedCornerShape(14.dp),
+          modifier = Modifier.fillMaxWidth().minimumInteractiveComponentSize(),
+        ) {
+          Text(stringResource(R.string.dashboard_done))
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
       }
     }
   }

@@ -44,9 +44,6 @@
 
     <!-- Tools -->
     <string name="tools_title">Time Tools</string>
-    <string name="tools_tab_timer">Timer</string>
-    <string name="tools_tab_stopwatch">Stopwatch</string>
-    <string name="tools_tab_focus">Focus</string>
 
     <!-- Games -->
     <string name="games_title">Time Games</string>
